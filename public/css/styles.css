@@ -1,28 +1,63 @@
-/******* Change Box Model ***************/
-*,
-*:before,
-*:after {
+/* CSS Variables */
+:root {
+  /* Primary Colors */
+  --primary-color: #0d47a1;
+  --primary-dark: #072c65;
+  --primary-light: #3373d4;
+
+  /* Secondary Colors */
+  --secondary-color: #1a1a2e;
+  --secondary-light: #2d2d4d;
+
+  /* Neutral Colors */
+  --text-color: #333;
+  --background-color: #f4f4f4;
+  --white: #fff;
+  --light-gray: #f9f9f9;
+  --border-color: #e1e1e1;
+
+  /* Accent Colors */
+  --accent-color: #e91e63;
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+
+  /* UI Elements */
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --hover-overlay: rgba(255, 255, 255, 0.1);
+  --primary-transparent: rgba(13, 71, 161, 0.1);
+
+  /* Typography */
+  --heading-font: 'Montserrat', sans-serif;
+  --body-font: 'Open Sans', sans-serif;
+}
+
+/* Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;500;600&display=swap');
+
+/* Base Styles */
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--body-font);
   line-height: 1.6;
-  color: #333;
-  background-color: #f4f4f4;
+  color: var(--text-color);
+  background-color: var(--background-color);
 }
 
-/******* Typography **************/
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
+  font-family: var(--heading-font);
   font-weight: 700;
   margin-bottom: 0.5rem;
 }
 
 a {
   text-decoration: none;
-  color: #1a73e8;
+  color: var(--primary-color);
 }
 
 ul {
@@ -34,20 +69,20 @@ img {
   height: auto;
 }
 
-/* Layout ***************/
+/* Layout */
 #wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--white);
+  box-shadow: 0 0 10px var(--shadow-color);
   position: relative;
 }
 
-/* Header Styles ***************/
+/* Header Styles */
 header {
   padding: 1rem;
-  background-color: #fff;
-  border-bottom: 1px solid #e1e1e1;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .site-header {
@@ -57,13 +92,15 @@ header {
 }
 
 .logo h1 {
-  color: #1a73e8;
+  color: var(--primary-color);
   font-size: 1.7rem;
   margin: 0;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .account-link a {
-  color: #1a73e8;
+  color: var(--primary-color);
   font-weight: 600;
 }
 
@@ -71,9 +108,9 @@ header {
   text-decoration: underline;
 }
 
-/* Navigation Styles ***************/
+/* Navigation Styles */
 nav {
-  background-color: #1a1a2e;
+  background-color: var(--secondary-color);
 }
 
 .navigation {
@@ -81,6 +118,7 @@ nav {
   flex-wrap: wrap;
   justify-content: space-around;
   padding: 0.5rem 0;
+  font-family: var(--heading-font);
 }
 
 .navigation li {
@@ -88,7 +126,7 @@ nav {
 }
 
 .navigation a {
-  color: #fff;
+  color: var(--white);
   font-weight: 500;
   padding: 0.5rem;
   display: block;
@@ -96,25 +134,27 @@ nav {
 }
 
 .navigation a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--hover-overlay);
   border-radius: 4px;
 }
 
-/* Main Content ***************/
+/* Main Content */
 main {
   padding: 1.5rem;
 }
 
-/* Hero Section ***************/
+/* Hero Section */
 .home-container h2 {
   margin-bottom: 1.5rem;
   font-size: 1.8rem;
-  color: #1a1a2e;
+  color: var(--secondary-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .hero-section {
   margin-bottom: 2rem;
-  background-color: rgba(26, 115, 232, 0.1);
+  background-color: var(--primary-transparent);
   border-radius: 8px;
   padding: 1.5rem;
 }
@@ -126,13 +166,15 @@ main {
 }
 
 .delorean-details {
-  color: #1a73e8;
+  color: var(--primary-color);
   z-index: 2;
 }
 
 .delorean-details h3 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .delorean-details ul {
@@ -146,16 +188,19 @@ main {
 .btn {
   display: inline-block;
   padding: 0.6rem 1.2rem;
-  background-color: #1a73e8;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--white);
   border-radius: 4px;
   font-weight: 600;
+  font-family: var(--heading-font);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   transition: background-color 0.3s;
   text-align: center;
 }
 
 .btn:hover {
-  background-color: #0d47a1;
+  background-color: var(--primary-dark);
 }
 
 .delorean-image {
@@ -171,20 +216,23 @@ main {
 }
 
 .upgrades, .reviews {
-  background-color: #f9f9f9;
+  background-color: var(--light-gray);
   padding: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .upgrades h3, .reviews h3 {
-  color: #1a1a2e;
+  color: var(--secondary-color);
   margin-bottom: 1rem;
-  border-bottom: 2px solid #1a73e8;
+  border-bottom: 2px solid var(--primary-color);
   padding-bottom: 0.5rem;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-/* Upgrades Grid ***************/
+/* Upgrades Grid */
 .upgrades-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -199,7 +247,7 @@ main {
 }
 
 .upgrade-img {
-  background-color: #1a73e8;
+  background-color: var(--primary-color);
   padding: 0.5rem;
   border-radius: 8px;
   margin-bottom: 0.5rem;
@@ -215,7 +263,7 @@ main {
   object-fit: contain;
 }
 
-/* Reviews List ***************/
+/* Reviews List */
 .review-list li {
   margin-bottom: 0.5rem;
   padding-left: 1rem;
@@ -226,19 +274,20 @@ main {
   content: "•";
   position: absolute;
   left: 0;
-  color: #1a73e8;
+  color: var(--primary-color);
 }
 
-/* Footer Styles ***************/
+/* Footer Styles */
 footer {
-  background-color: #1a1a2e;
-  color: #fff;
+  background-color: var(--secondary-color);
+  color: var(--white);
   text-align: center;
   padding: 1rem;
   margin-top: 2rem;
+  font-size: 0.9rem;
 }
 
-/* Responsive Design ***************/
+/* Responsive Design */
 @media screen and (min-width: 768px) {
   /* Header adjustments */
   .logo h1 {
@@ -295,7 +344,7 @@ footer {
   }
 }
 
-/************ Decorative elements */
+/* Decorative elements */
 #wrapper::before,
 #wrapper::after {
   content: "";
@@ -307,8 +356,8 @@ footer {
           to bottom,
           #000 0px,
           #000 20px,
-          #fff 20px,
-          #fff 40px
+          var(--white) 20px,
+          var(--white) 40px
   );
   z-index: -1;
 }
