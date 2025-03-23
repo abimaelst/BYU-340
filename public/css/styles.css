@@ -1,4 +1,6 @@
-/* CSS Variables */
+/* Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;500;600&display=swap'); /* CSS Variables */
+
 :root {
   /* Primary Colors */
   --primary-color: #0d47a1;
@@ -30,9 +32,6 @@
   --heading-font: 'Montserrat', sans-serif;
   --body-font: 'Open Sans', sans-serif;
 }
-
-/* Font Imports */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;500;600&display=swap');
 
 /* Base Styles */
 * {
