@@ -10,12 +10,17 @@ invCont.buildByClassificationId = async function (req, res, next) {
   const classification_id = req.params.classificationId;
   const data = await invModel.getInventoryByClassificationId(classification_id);
   const grid = await utilities.buildClassificationGrid(data);
-  let nav = await utilities.getNav();
+  let nav = await utilities.getNav(req, res, next);
   const className = data[0]?.classification_name;
+  const breadcrumbs = utilities.buildBreadcrumbs([{
+    name: className,
+    link: "/inv/type/" + classification_id
+  }]);
   res.render("./inventory/classification", {
     title: className + " vehicles",
     nav,
     grid,
+    breadcrumbs,
   });
 };
 
@@ -26,12 +31,20 @@ invCont.buildByInventoryId = async function (req, res, next) {
   const inv_id = req.params.invId;
   const data = await invModel.getInventoryByInventoryId(inv_id);
   const grid = await utilities.buildDetailGrid(data);
-  let nav = await utilities.getNav();
-  const className = data[0]?.inv_make + " " + data[0]?.inv_model;
+  let nav = await utilities.getNav(req, res, next);
+  const vehicle = data[0];
+  const breadcrumbs = utilities.buildBreadcrumbs([{
+    name: vehicle.classification_name,
+    link: "/inv/type/" + vehicle.classification_id
+  }, {
+    name: vehicle.inv_make + " " + vehicle.inv_model,
+    link: "/inv/detail/" + inv_id
+  }]);
   res.render("./inventory/detail", {
-    title: className,
+    title: vehicle.inv_make + " " + vehicle.inv_model,
     nav,
     grid,
+    breadcrumbs,
   });
 };
 

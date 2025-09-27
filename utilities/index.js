@@ -7,18 +7,23 @@ const Util = {};
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications();
   let list = "<ul class='navigation'>";
-  list += '<li><a href="/" title="Home page">Home</a></li>';
+  list += `<li><a href="/" title="Home page" ${req.originalUrl === '/' ? 'class="active"' : ''}>Home</a></li>`;
+  let classification_id = req.params.classificationId;
+  if (!classification_id) {
+    const inv_id = req.params.invId;
+    if (inv_id) {
+      const invData = await invModel.getInventoryByInventoryId(inv_id);
+      if (invData.length > 0) {
+        classification_id = invData[0].classification_id;
+      }
+    }
+  }
   data.rows.forEach((row) => {
     list += "<li>";
-    list += (
-      '<a href="/inv/type/' +
-      row.classification_id +
-      '" title="See our inventory of ' +
-      row.classification_name +
-      ' vehicles">' +
-      row.classification_name +
-      "</a>"
-    );
+    list +=
+      `<a href="/inv/type/${row.classification_id}" title="See our inventory of ${row.classification_name} vehicles" ${
+        row.classification_id == classification_id ? 'class="active"' : ""
+      }>${row.classification_name}</a>`;
     list += "</li>";
   });
   list += "</ul>";
@@ -112,6 +117,24 @@ Util.buildDetailGrid = async function (data) {
   }
   return grid;
 };
+
+/* **************************************
+ * Build the breadcrumbs view HTML
+ * ************************************ */
+Util.buildBreadcrumbs = function (path) {
+  let breadcrumbs = "<ul class='breadcrumbs'>";
+  breadcrumbs += '<li><a href="/">Home</a></li>';
+  for (let i = 0; i < path.length; i++) {
+    breadcrumbs += "<li>&gt;</li>";
+    if (i === path.length - 1) {
+      breadcrumbs += "<li>" + path[i].name + "</li>";
+    } else {
+      breadcrumbs += '<li><a href="' + path[i].link + '">' + path[i].name + "</a></li>";
+    }
+  }
+  breadcrumbs += "</ul>";
+  return breadcrumbs;
+}
 
 /* ****************************************
  * Middleware For Handling Errors

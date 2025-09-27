@@ -14,6 +14,15 @@ const express = require("express");
 const env = require("dotenv").config();
 const expressLayouts = require("express-ejs-layouts");
 const app = express();
+
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-eval'; style-src 'self' https://fonts.googleapis.com; frame-src 'self';"
+  );
+  next();
+});
+
 const static = require("./routes/static");
 
 /* ***********************
@@ -40,7 +49,7 @@ app.use(async (req, res, next) => {
  * Place after all other middleware
  *************************/
 app.use(async (err, req, res, next) => {
-  let nav = await utilities.getNav();
+  let nav = await utilities.getNav(req, res, next);
   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
   if (err.status == 404) {
     message = err.message;

@@ -386,8 +386,8 @@ footer {
 
 .error-page__button:hover {
   background-color: var(--primary-dark);
-  transfo
-
+  transform: translateY(-2px);
+}
 
 
 /* Decorative elements */
@@ -437,4 +437,95 @@ footer {
   #detail-data {
     width: 50%;
   }
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  padding: 10px 15px;
+  list-style: none;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+.breadcrumbs li {
+  display: inline;
+  font-size: 14px;
+}
+.breadcrumbs li+li:before {
+  padding: 8px;
+  color: black;
+  content: ">";
+}
+
+.breadcrumbs li a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.breadcrumbs li a:hover {
+  text-decoration: underline;
+}
+
+
+/* Inventory Display */
+#inv-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 0;
+  list-style-type: none;
+}
+
+#inv-display li {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px var(--shadow-color);
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+#inv-display li:hover {
+  transform: translateY(-5px);
+}
+
+#inv-display a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#inv-display img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+#inv-display .namePrice {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#inv-display .namePrice h2 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+#inv-display .namePrice hr {
+  display: none;
+}
+
+#inv-display .namePrice span {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-top: auto;
 }
