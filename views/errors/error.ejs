@@ -1,11 +1,7 @@
-<section class="error-page" style="text-align:center; padding: 3rem 1rem;">
-  <img src="/images/site/404_image.webp" alt="404 Not Found" style="max-width:400px; width:100%; height:auto; margin-bottom:2rem;" />
+<section class="error-page">
+  <img src="/images/404_image.webp" alt="404 Not Found" class="error-page__image" />
   
-  <h1 style="font-size:2.5rem; margin-bottom:1rem;">Oops! Page Not Found</h1>
-  <p style="margin-bottom:2rem;">The page you are looking for doesn’t exist or has been moved.</p>
-
-  <a href="/" 
-     style="text-decoration:none; padding:0.75rem 1.5rem; background:#0073e6; color:#fff; border-radius:6px; transition:background 0.3s;">
-     Go Back Home
-  </a>
+  <h1 class="error-page__title">Oops! Page Not Found</h1>
+  <p class="error-page__message"><%= message %></p>
+  <a href="/" class="error-page__button">Go Back Home</a>
 </section>
