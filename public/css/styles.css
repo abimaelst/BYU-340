@@ -114,6 +114,7 @@ nav {
 
 .navigation {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   justify-content: space-around;
   padding: 0.5rem 0;
