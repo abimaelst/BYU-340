@@ -415,3 +415,26 @@ footer {
 #wrapper::after {
   right: -20px;
 }
+
+#detail-display {
+  display: flex;
+  flex-direction: column;
+}
+
+#detail-data {
+  margin: 1em;
+}
+
+@media (min-width: 768px) {
+  #detail-display {
+    flex-direction: row;
+  }
+
+  #detail-display img {
+    width: 50%;
+  }
+
+  #detail-data {
+    width: 50%;
+  }
+}

@@ -10,14 +10,15 @@ Util.getNav = async function (req, res, next) {
   list += '<li><a href="/" title="Home page">Home</a></li>';
   data.rows.forEach((row) => {
     list += "<li>";
-    list +=
+    list += (
       '<a href="/inv/type/' +
       row.classification_id +
       '" title="See our inventory of ' +
       row.classification_name +
       ' vehicles">' +
       row.classification_name +
-      "</a>";
+      "</a>"
+    );
     list += "</li>";
   });
   list += "</ul>";
@@ -71,6 +72,41 @@ Util.buildClassificationGrid = async function (data) {
       grid += "</li>";
     });
     grid += "</ul>";
+  } else {
+    grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>';
+  }
+  return grid;
+};
+
+/* **************************************
+ * Build the detail view HTML
+ * ************************************ */
+Util.buildDetailGrid = async function (data) {
+  let grid;
+  const vehicle = data[0];
+  if (data.length > 0) {
+    grid = '<div id="detail-display">';
+    grid +=
+      '<img src="' +
+      vehicle.inv_image +
+      '" alt="Image of ' +
+      vehicle.inv_make +
+      " " +
+      vehicle.inv_model +
+      ' on CSE Motors" />';
+    grid += '<div id="detail-data">';
+    grid += "<h2>" + vehicle.inv_make + " " + vehicle.inv_model + " Details</h2>";
+    grid +=
+      '<p><strong>Price:</strong> $' +
+      new Intl.NumberFormat("en-US").format(vehicle.inv_price) +
+      "</p>";
+    grid += '<p><strong>Description:</strong> ' + vehicle.inv_description + "</p>";
+    grid +=
+      '<p><strong>Mileage:</strong> ' +
+      new Intl.NumberFormat("en-US").format(vehicle.inv_miles) +
+      "</p>";
+    grid += "</div>";
+    grid += "</div>";
   } else {
     grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>';
   }
