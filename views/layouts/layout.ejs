@@ -6,8 +6,7 @@
 <div id="wrapper">
     <%- include('../partials/header') %>
     <%- include('../partials/navigation') %>
-
-    <%- messages %>
+    <%- messages() %>
     <main>
         <% if (typeof breadcrumbs !== 'undefined') { %>
             <%- breadcrumbs %>
