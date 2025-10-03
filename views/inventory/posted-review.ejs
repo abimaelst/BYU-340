@@ -1,0 +1,41 @@
+<!-- Content heading -->
+<% if (title) { %>
+    <!-- If a title exists, render it as a heading -->
+    <h1><%- title %></h1>
+<% } else { %>
+    <!-- If no title exists, redirect to the home page -->
+    <% res.redirect('/') %>
+<% } %>
+
+<!-- Render the grid (assumed to be some HTML content) -->
+<%- grid %> 
+
+<% if(locals.loggedin == 1) { %>
+    <!-- If the user is logged in, display the Customer Reviews section -->
+    <h1>Customer Reviews</h1>
+
+    <!-- Form to add a new review -->
+    <h1>Add Your Own Review</h1>
+    <form class="account" action="postedReview" method="post">
+        <div class="input-control">
+            <!-- Input field for screen name (pre-filled with the user's first name) -->
+            <label for="identifier">Screen Name:</label>
+            <input type="text" id="identifier" name="review_id" size="10" value="<%- locals.accountData.account_firstname %>" required>
+        </div>
+        <div class="input-control">
+            <!-- Text area for the review content -->
+            <label for="description">Review:</label>
+            <textarea rows="5" cols="10" name="review_text" id="description" required></textarea>
+        </div>
+        <!-- Hidden fields for inventory ID and account ID -->
+        <input type="hidden" id="invId" name="inv_id">
+        <input type="hidden" id="accountId" name="account_id">
+        <!-- Submit button for the form -->
+        <button type="submit">Add Review</button>
+    </form>       
+<% } else { %>
+    <!-- If the user is not logged in, prompt them to log in to write a review -->
+    <h1>Customer Reviews</h1>
+    <p>Be the first to write a review</p>
+    <p>You must <a href="/account/login">login</a> to write a review.</p>
+<% } %>
