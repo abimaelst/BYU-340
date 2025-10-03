@@ -529,3 +529,20 @@ footer {
   color: var(--primary-color);
   margin-top: auto;
 }
+
+/* Flash Messages */
+.notice {
+  padding: 1rem;
+  margin: 1rem;
+  background-color: var(--primary-light);
+  color: var(--white);
+  border-radius: 4px;
+}
+
+.error {
+  padding: 1rem;
+  margin: 1rem;
+  background-color: var(--accent-color);
+  color: var(--white);
+  border-radius: 4px;
+}
