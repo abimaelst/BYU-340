@@ -228,12 +228,12 @@ Util.getTools = (req) => {
       return html;
     } catch (error) {
       let html =
-        '<a title="Click to log in" href="/account/login">My account</a>';
+        '<a title="Click to log in" href="/account/login">Login</a>';
       return html;
     }
   } else {
     let html =
-      '<a title="Click to log in" href="/account/login">My account</a>';
+      '<a title="Click to log in" href="/account/login">Login</a>';
     return html;
   }
 };
