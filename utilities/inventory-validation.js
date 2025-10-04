@@ -13,8 +13,8 @@ validate.classificationRules = () => {
     body("classification_name")
       .trim()
       .notEmpty()
-      .isAlpha() 
-      .isLength({ min: 1 })     
+      .isLength({ min: 1 })
+      .matches(/^[a-zA-Z ]*$/)
       .withMessage("A valid classification is required.")
       .custom(async (classification_name) => {
         const classExists = await invModel.checkExistingClassification(classification_name);

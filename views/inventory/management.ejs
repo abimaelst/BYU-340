@@ -6,40 +6,7 @@
 
 <%- messages() %>
 
-<% if (errors) { %>
-    <ul class="notice">
-   <% errors.array().forEach(error => { %>
-     <li><%= error.msg %></li>
-  <%  }) %>
-   </ul>
-  <% } %>
-
 <div class="management">
     <a href="/inv/add-classification">Add New Classification</a>
-    <a href="/inv/add-inventory">Add New Vehicle</a>
-    
-    <h2>Manage Inventory</h2>
-    <p>Choose a classification to see those inventory items</p>
-    <%- classificationSelect %>
+    <a href="/inv/add-inventory">Add New Inventory</a>
 </div>
-
-<table id="inventoryDisplay"></table>
-<noscript>Javascript must be enabled to use this page</noscript>
-
-<script src="../../js/inventory.js"></script>
-
-<script>
-    const pswdBtn = document.querySelector('#pwordBtn');
-    pswdBtn.addEventListener('click', function(){
-        const pswdInput = document.querySelector('#pword');
-        const type = pswdInput.getAttribute('type');
-        if (type == 'password'){
-            pswdInput.setAttribute('type', 'text');
-            pswdBtn.innerHTML = "&#128275;"
-        }
-        else{
-            pswdInput.setAttribute('type', 'password');
-            pswdBtn.innerHTML = "&#128274;"
-        }
-    })
-</script>

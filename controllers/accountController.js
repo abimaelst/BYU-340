@@ -128,21 +128,21 @@ async function registerAccount(req, res) {
 /* ****************************************
  *  Process login request
  * *************************************** */
-async function accountLogin(req, res) {
-  let nav = await utilities.getNav();
-  const { account_email, account_password } = req.body;
-  const accountData = await accountModel.getAccountByEmail(account_email);
-  if (!accountData) {
-    req.flash("notice", "Please check your credentials and try again.");
-    res.status(400).render("account/login", {
-      title: "Login",
-      nav,
-      errors: null,
-      account_email,
-    });
-    return;
-  }
+async function accountLogin(req, res, next) {
   try {
+    let nav = await utilities.getNav();
+    const { account_email, account_password } = req.body;
+    const accountData = await accountModel.getAccountByEmail(account_email);
+    if (!accountData) {
+      req.flash("notice", "Please check your credentials and try again.");
+      res.status(400).render("account/login", {
+        title: "Login",
+        nav,
+        errors: null,
+        account_email,
+      });
+      return;
+    }
     if (await bcrypt.compare(account_password, accountData.account_password)) {
       delete accountData.account_password;
       const accessToken = jwt.sign(
@@ -159,17 +159,25 @@ async function accountLogin(req, res) {
           maxAge: 3600 * 1000,
         });
       }
-      //getting user name, type and Id to use on header, form and authorization
+
       req.session.user = {
         name: accountData.account_firstname,
         userType: accountData.account_type,
         userId: accountData.account_id,
       };
-      return res.redirect("/account/");
+      return res.redirect("/");
+    } else {
+      req.flash("notice", "Please check your credentials and try again.");
+      res.status(400).render("account/login", {
+        title: "Login",
+        nav,
+        errors: null,
+        account_email,
+      });
     }
   } catch (error) {
-    req.flash("notice", "Access Forbidden");
-    res.status(403).redirect("/account/login");
+    console.log(error);
+    next(error);
   }
 }
 
@@ -200,7 +208,6 @@ async function updateAccount(req, res) {
 
   if (regResult) {
     const newAccountData = await accountModel.getAccountById(account_id);
-    // adding new data to the session
     req.session.user = {
       name: newAccountData.account_firstname,
       userType: req.session.user.userType,

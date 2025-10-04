@@ -201,10 +201,11 @@ Util.checkLogin = (req, res, next) => {
 };
 
 Util.checkAuthorization = (req, res, next) => {
+  console.log(res.locals.accountData);
   if (
     res.locals.loggedin &&
     (res.locals.accountData.account_type == "Admin" ||
-      res.locals.accountData.account_type == "Employee")
+      res.locals.accountData.account_type == "Client")
   ) {
     next();
   } else {

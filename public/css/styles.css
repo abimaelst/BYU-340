@@ -425,7 +425,7 @@ footer {
   margin: 1em;
 }
 
-.login-form {
+.login-form, .management-form form {
   display: flex;
   flex-direction: column;
   max-width: 600px;
@@ -437,11 +437,57 @@ footer {
   box-shadow: 0 2px 4px var(--shadow-color);
 }
 
-.login-form div {
+.login-form div, .management-form div {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
+
+
+.account-form p {
+  font-size: 0.9rem;
+  color: var(--accent-color);
+  margin-bottom: 1em;
+}
+
+.account-form fieldset, .management-form fieldset {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+
+  background-color: var(--light-gray);
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.account-form label, .management-form label {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-label {
+ position: relative;
+}
+
+.account-label input {
+  padding: 0.5em 0.5em 0.5em 1.5em;
+  margin-top: 0.5em;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: var(--body-font);
+  width: 100%;
+}
+
+.account-label span {
+ position: absolute;
+ top: 55%;
+ left: 2px;
+ cursor: pointer;
+}
+
 
 @media (min-width: 768px) {
   #detail-display {
@@ -591,3 +637,14 @@ form button {
 form button:hover {
     background-color: var(--primary-dark);
 }
+
+/* input:required:invalid, input:focus:invalid {
+ background-image: url(/images/invalid.png);
+ background-position: right top;
+ background-repeat: no-repeat;
+}
+ input:required:valid {
+ background-image: url(/images/valid.png);
+ background-position: right top;
+ background-repeat: no-repeat;
+ } */

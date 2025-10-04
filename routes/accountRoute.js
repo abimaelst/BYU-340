@@ -34,7 +34,7 @@ router.post(
 
 // Process the login attempt
 router.post(
-  "/",
+  "/login",
   regValidate.LoginRules(),
   regValidate.checkLoginData,
   Util.handleErrors(accountController.accountLogin)
