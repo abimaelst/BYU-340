@@ -42,10 +42,16 @@ async function buildRegister(req, res, next) {
 async function buildManagement(req, res, next) {
   try {
     let nav = await utilities.getNav();
+    const accountData = await accountModel.getAccountById(res.locals.accountData.account_id);
     res.render("account/account-management", {
       title: "Account Management",
       nav,
       errors: null,
+      user: {
+        name: accountData.account_firstname,
+        userType: accountData.account_type,
+        userId: accountData.account_id,
+      }
     });
   } catch (error) {
     next(error);
@@ -57,11 +63,17 @@ async function buildManagement(req, res, next) {
  * *************************************** */
 async function buildAccountManagement(req, res, next) {
   try {
+    const account_id = parseInt(req.params.account_id);
+    const accountData = await accountModel.getAccountById(account_id);
     let nav = await utilities.getNav();
     res.render("account/update", {
       title: "Edit Account",
       nav,
       errors: null,
+      account_firstname: accountData.account_firstname,
+      account_lastname: accountData.account_lastname,
+      account_email: accountData.account_email,
+      account_id: accountData.account_id,
     });
   } catch (error) {
     next(error);
@@ -160,12 +172,10 @@ async function accountLogin(req, res, next) {
         });
       }
 
-      req.session.user = {
-        name: accountData.account_firstname,
-        userType: accountData.account_type,
-        userId: accountData.account_id,
-      };
-      return res.redirect("/");
+      res.locals.accountData = accountData;
+      res.locals.loggedin = 1;
+
+      return res.redirect("/account/");
     } else {
       req.flash("notice", "Please check your credentials and try again.");
       res.status(400).render("account/login", {
@@ -182,19 +192,14 @@ async function accountLogin(req, res, next) {
 }
 
 async function accountLogout(req, res) {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.redirect("/account/");
-    }
-    res.clearCookie("jwt");
-    res.redirect("/");
-  });
+  res.clearCookie("jwt");
+  res.redirect("/");
 }
 
 /* ****************************************
  *  Process Update Account
  * *************************************** */
-async function updateAccount(req, res) {
+async function updateAccount(req, res, next) {
   let nav = await utilities.getNav();
   const { account_firstname, account_lastname, account_email, account_id } =
     req.body;
@@ -207,19 +212,17 @@ async function updateAccount(req, res) {
   );
 
   if (regResult) {
-    const newAccountData = await accountModel.getAccountById(account_id);
-    req.session.user = {
-      name: newAccountData.account_firstname,
-      userType: req.session.user.userType,
-      userId: newAccountData.account_id,
-    };
+    const accountData = await accountModel.getAccountById(account_id);
     req.flash("notice", `Congratulations, your information has been updated.`);
-    res.status(201).render("account/account-management", {
+    res.render("account/account-management", {
       title: "Account Management",
       nav,
       errors: null,
-      //using update data to render the view
-      user: req.session.user,
+      user: {
+        name: accountData.account_firstname,
+        userType: accountData.account_type,
+        userId: accountData.account_id,
+      }
     });
   } else {
     req.flash("notice", "Sorry, the update failed.");
@@ -230,6 +233,7 @@ async function updateAccount(req, res) {
       account_firstname,
       account_lastname,
       account_email,
+      account_id,
     });
   }
 }
@@ -237,7 +241,7 @@ async function updateAccount(req, res) {
 /* ****************************************
  *  Process Update Password
  * *************************************** */
-async function updatePassword(req, res) {
+async function updatePassword(req, res, next) {
   let nav = await utilities.getNav();
   const { account_password, account_id } = req.body;
 
@@ -255,6 +259,7 @@ async function updatePassword(req, res) {
       title: "Edit Account",
       nav,
       errors: null,
+      account_id,
     });
     return;
   }
@@ -265,18 +270,25 @@ async function updatePassword(req, res) {
   );
 
   if (regResult) {
-    req.flash("notice", `Congratulations, your information has been updated.`);
-    res.status(201).render("account/account-management", {
+    const accountData = await accountModel.getAccountById(account_id);
+    req.flash("notice", `Congratulations, your password has been updated.`);
+    res.render("account/account-management", {
       title: "Account Management",
       nav,
       errors: null,
+      user: {
+        name: accountData.account_firstname,
+        userType: accountData.account_type,
+        userId: accountData.account_id,
+      }
     });
   } else {
-    req.flash("notice", "Sorry, the update failed.");
+    req.flash("notice", "Sorry, the password update failed.");
     res.status(501).render("account/update", {
       title: "Edit Account",
       nav,
       errors: null,
+      account_id,
     });
   }
 }

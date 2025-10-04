@@ -145,16 +145,11 @@ validate.updateAccountRules = () => {
       .isEmail()
       .normalizeEmail() // refer to validator.js docs
       .withMessage("A valid email is required.")
-      .custom(async (account_email) => {
-        const emailExists = await accountModel.checkExistingEmail(
-          account_email
-        );
-        if (emailExists) {
-          if (!emailExists.account_id == body("account_id")) {
-            throw new Error(
-              "Email exists. Please log in or use different email"
-            );
-          }
+      .custom(async (account_email, { req }) => {
+        const account_id = req.body.account_id;
+        const account = await accountModel.getAccountByEmail(account_email);
+        if (account && account.account_id != account_id) {
+          throw new Error("Email exists. Please log in or use different email");
         }
       }),
   ];
@@ -210,15 +205,16 @@ validate.checkUpdatePasswordData = async (req, res, next) => {
   errors = validationResult(req);
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
-    let tools = utilities.getTools(req);
+    const account_id = req.body.account_id;
+    const accountData = await accountModel.getAccountById(account_id);
     res.render("account/update", {
       errors,
       title: "Edit Account",
-      tools,
       nav,
-      account_firstname,
-      account_lastname,
-      account_email,
+      account_firstname: accountData.account_firstname,
+      account_lastname: accountData.account_lastname,
+      account_email: accountData.account_email,
+      account_id: accountData.account_id,
     });
     return;
   }

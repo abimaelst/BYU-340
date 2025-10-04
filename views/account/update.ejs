@@ -1,58 +1,46 @@
 <% if (title) { %>
-    <h1><%= title %></h1>
-    <% } else {
-      res.redirect('/')
-    } %>
+  <h1><%= title %></h1>
+  <% } else { res.redirect('/') } %>
 
 <%- messages() %>
 
 <% if (errors) { %>
-    <ul class="notice">
-   <% errors.array().forEach(error => { %>
-     <li><%= error.msg %></li>
-  <%  }) %>
-   </ul>
+  <ul class="notice">
+    <% errors.array().forEach(error => { %>
+      <li><%= error.msg %></li>
+      <% }) %>
+  </ul>
   <% } %>
 
-  <div class="account-form">
-    <form id="updateForm" action="/account/updateAccount" method="post">
-        <fieldset>
-            <legend></legend>          
-            <label class="account-label">First Name<input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>"></label>
-            <label class="account-label">Last Name<input type="text" name="account_lastname" id="accountLastname" required value="<%= locals.account_lastname %>"></label>
-            <label class="account-label">Email address<input type="email" name="account_email" id="accountEmail" required placeholder="Enter a valid email address" value="<%= locals.account_email %>"></label>
-            <button type="submit">Update</button>    
-            <input type="hidden" name="account_id" <% if (user) { %> value="<%= user.userId %>" <% } %>> 
-        </fieldset>       
-    </form>
+<div class="account-update-forms">
+  <form action="/account/updateAccount" method="post" class="account-form">
+    <h2>Account Update</h2>
+    <fieldset>
+      <label for="account_firstname">First Name</label>
+      <input type="text" id="account_firstname" name="account_firstname" required value="<%= account_firstname %>">
+
+      <label for="account_lastname">Last Name</label>
+      <input type="text" id="account_lastname" name="account_lastname" required value="<%= account_lastname %>">
+
+      <label for="account_email">Email Address</label>
+      <input type="email" id="account_email" name="account_email" required value="<%= account_email %>">
+
+      <input type="hidden" name="account_id" value="<%= account_id %>">
+
+      <button type="submit">Update Account</button>
+    </fieldset>
+  </form>
+
+  <form action="/account/updatePassword" method="post" class="account-form">
+    <h2>Change Password</h2>
+    <fieldset>
+      <label for="account_password">New Password</label>
+      <input type="password" id="account_password" name="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+      <p>Password must be at least 12 characters long and contain at least 1 number, 1 capital letter, and 1 special character.</p>
+
+      <input type="hidden" name="account_id" value="<%= account_id %>">
+
+      <button type="submit">Update Password</button>
+    </fieldset>
+  </form>
 </div>
-
-<div class="account-form">    
-    <form id="updatePasswordForm" action="/account/updatePassword" method="post">
-        <fieldset>
-            <legend></legend>
-            <p>*note your original password will be changed</p>
-            <label class="account-label">Password<input type="password" name="account_password" id="accountPassword" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"><span id="pwordBtn">&#128274;</span></label>
-            <span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character</span>
-            <button type="submit">Change Password</button>
-            <input type="hidden" name="account_id" <% if (user) { %> value="<%= user.userId %>" <% } %>>    
-        </fieldset>       
-    </form>
-</div>
-
-
-<script>
-    const pswdBtn = document.querySelector('#pwordBtn');
-    pswdBtn.addEventListener('click', function(){
-        const pswdInput = document.querySelector('#accountPassword');
-        const type = pswdInput.getAttribute('type');
-        if (type == 'password'){
-            pswdInput.setAttribute('type', 'text');
-            pswdBtn.innerHTML = "&#128275;"
-        }
-        else{
-            pswdInput.setAttribute('type', 'password');
-            pswdBtn.innerHTML = "&#128274;"
-        }
-    })
-</script>

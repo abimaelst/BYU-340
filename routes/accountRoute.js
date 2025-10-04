@@ -22,7 +22,7 @@ router.get("/", Util.checkLogin, Util.handleErrors(accountController.buildManage
 router.get('/logout', Util.handleErrors(accountController.accountLogout));
 
 // Deliver Account Management View
-router.get("/update", Util.checkLogin, Util.handleErrors(accountController.buildAccountManagement));
+router.get("/update/:account_id", Util.checkLogin, Util.handleErrors(accountController.buildAccountManagement));
 
 // Process the registration data
 router.post(

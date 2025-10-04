@@ -201,11 +201,10 @@ Util.checkLogin = (req, res, next) => {
 };
 
 Util.checkAuthorization = (req, res, next) => {
-  console.log(res.locals.accountData);
   if (
     res.locals.loggedin &&
     (res.locals.accountData.account_type == "Admin" ||
-      res.locals.accountData.account_type == "Client")
+      res.locals.accountData.account_type == "Employee")
   ) {
     next();
   } else {
@@ -224,12 +223,13 @@ Util.getTools = (req) => {
         req.cookies.jwt,
         process.env.ACCESS_TOKEN_SECRET
       );
-      let html = `<p>Welcome,</p>
-          <a title="Click to access account management" href="/account/">${cookieData.account_firstname}</a>
-                      <a title="Click to log out" href="/account/logout">Log out</a>`;
+      let html = `<a title="Click to access account management" href="/account/">Welcome ${cookieData.account_firstname}</a>
+                  <a title="Click to log out" href="/account/logout">Log out</a>`;
       return html;
     } catch (error) {
-      throw new Error(error);
+      let html =
+        '<a title="Click to log in" href="/account/login">My account</a>';
+      return html;
     }
   } else {
     let html =
