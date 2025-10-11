@@ -110,7 +110,6 @@ Util.buildClassificationList = async function (classification_id = null) {
  * Build HTML for vehicle detail view
  ************************** */
 
-// Function to build HTML view for a single inventory item detail
 Util.buildVehicleDetails = function (vehicle) {
   let view = "";
 
@@ -123,9 +122,8 @@ Util.buildVehicleDetails = function (vehicle) {
       view += "</div>"; // close vehicle-detail
 
       view += '<div class="vehicle-detail-left">';
-      view += `<h1>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h1>`;
       view += '<div class="vehicle-pm">';
-      view += `<h2><strong>No Haggle-Price<sup>1</sup>:&nbsp; &nbsp; $${new Intl.NumberFormat(
+      view += `<h2><strong>No Haggle-Price<sup>1</sup>:&nbsp; &nbsp; ${new Intl.NumberFormat(
         "en-US"
       ).format(vehicle.inv_price)}</strong></h2>`;
       view += `<p><strong>Mileage</strong></p>`;
@@ -142,22 +140,20 @@ Util.buildVehicleDetails = function (vehicle) {
 
       view += `<p><strong>Description:</strong> ${vehicle.inv_description}</p>`;
       view += '<div class="vehicle-info">';
-      // Add a new section for buttons
-      view += '<div class=vehicle-buttons">';
-
-      view += '<button class="button">START MY PURCHASE</button>';
-      view += '<button class="button">CONTACT US NOW</button>';
-      view += '<button class="button">SCHEDULE TEST DRIVE</button>';
-      view += '<button class="button">APPLY FOR FINANCING</button>';
-      view += "</div>"; // close vehicle-buttons
-
-      view += "</div>"; // close vehicle-info
-      view += '<div class="vehicle-info">';
       view += `<p><strong>Year:</strong> ${vehicle.inv_year}</p>`;
       view += `<p><strong>Color:</strong> ${vehicle.inv_color}</p>`;
+      view += "</div>"; // close vehicle-info
 
-      view += "</div>"; // close vehicle-info
-      view += "</div>"; // close vehicle-info
+      // Add a new section for buttons
+      view += '<div class="vehicle-buttons">';
+
+      view += '<button class="btn">START MY PURCHASE</button>';
+      view += '<button class="btn">CONTACT US NOW</button>';
+      view += '<button class="btn">SCHEDULE TEST DRIVE</button>';
+      view += '<button class="btn">APPLY FOR FINANCING</button>';
+      view += "</div>"; // close vehicle-buttons
+
+      view += "</div>"; // close vehicle-name
     });
   }
 
@@ -238,46 +234,42 @@ Util.getTools = (req) => {
   }
 };
 
-/* **************************************
- * Build The New Review Display
- * ************************************ */
-// Define an asynchronous function to build the HTML structure for displaying reviews
-Util.addNewReview = async function (data) {
-  let review;
-
-  // Check if there are any reviews in the data
-  if (data.length > 0) {
-    // Start building the review HTML structure
-    review = '<div id="item-display">';
-
-    // Iterate over each review item
-    data.forEach((item) => {
-      // Append each review's details to the review HTML structure
-      review += `<div id="description">
-        <div class="vertical-line"></div>
-        <div id="item-description">
-          <h1>Customer Reviews</h1>
-          <h2>${item.review_id}</h2>
-          <p>${new Intl.DateTimeFormat("en-US").format(
-            new Date(item.review_date)
-          )}</p>
-          <p>${item.review_text}</p>
-        </div>
-      </div>`;
+Util.buildReviewList = function (reviews) {
+  let reviewList = "<ul class='review-list'>";
+  if (reviews.length > 0) {
+    reviews.forEach(review => {
+      reviewList += "<li class='review-item'>";
+      reviewList += `<p class='review-text'>${review.review_text}</p>`;
+      reviewList += `<p class='review-author'>By: ${review.account_firstname} ${review.account_lastname}</p>`;
+      reviewList += `<p class='review-date'>${new Date(review.review_date).toLocaleString()}</p>`;
+      reviewList += "</li>";
     });
-
-    // Close the review HTML structure
-    review += "</div>";
   } else {
-    // If there are no reviews, display a notice
-    review = '<p class="notice"> Sorry, there are no reviews.</p>';
+    reviewList += "<li class='no-reviews'></li>";
   }
+  reviewList += "</ul>";
+  return reviewList;
+};
 
-  // Log the review HTML structure to the console for debugging purposes
-  console.log(review);
-
-  // Return the review HTML structure
-  return review;
+Util.buildUserReviewList = function (reviews) {
+  let reviewList = "<ul class='user-review-list'>";
+  if (reviews.length > 0) {
+    reviews.forEach(review => {
+      reviewList += "<li class='user-review-item'>";
+      reviewList += `<h3>${review.inv_make} ${review.inv_model}</h3>`;
+      reviewList += `<p class='review-text'>${review.review_text}</p>`;
+      reviewList += `<p class='review-date'>${new Date(review.review_date).toLocaleString()}</p>`;
+      reviewList += '<div class="review-actions">';
+      reviewList += `<a href='/reviews/edit/${review.review_id}'>Edit</a>`;
+      reviewList += `<a href='/reviews/delete/${review.review_id}'>Delete</a>`;
+      reviewList += '</div>';
+      reviewList += "</li>";
+    });
+  } else {
+    reviewList += "<li class='no-reviews'>You have not written any reviews yet.</li>";
+  }
+  reviewList += "</ul>";
+  return reviewList;
 };
 
 module.exports = Util;

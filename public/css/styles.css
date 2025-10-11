@@ -623,6 +623,18 @@ form input {
     border: 1px solid var(--border-color);
 }
 
+textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  font-family: var(--body-font);
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 100px;
+}
+
 form button {
     margin-top: 1rem;
     padding: 0.5rem;
@@ -636,6 +648,30 @@ form button {
 
 form button:hover {
     background-color: var(--primary-dark);
+}
+
+.vehicle-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.reviews-container {
+  margin-top: 2rem;
+}
+
+.review-form {
+  max-width: 500px;
+}
+
+.review-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.account-action-link {
+  display: block;
+  margin-bottom: 10px;
 }
 
 /* input:required:invalid, input:focus:invalid {

@@ -9,11 +9,12 @@
 <div class="account-management">
   <h2>Welcome <%- user.name %></h2>
   <p>You're logged in</p>
-  <a href="/account/update/<%= user.userId %>">Update Account Information</a>
+  <a class="account-action-link" href="/account/update/<%= user.userId %>">Update Account Information</a>
+  <a class="account-action-link" href="/reviews/my-reviews">My Reviews</a>
 
   <% if (user.userType == "Admin" || user.userType == "Employee") { %>
     <h3>Inventory Management</h3>
-    <a href="/inv/">Manage Inventory</a>
+    <a class="account-action-link" href="/inv/">Manage Inventory</a>
     <% } %>
     
 </div>

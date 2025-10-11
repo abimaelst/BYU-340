@@ -221,4 +221,45 @@ validate.checkUpdatePasswordData = async (req, res, next) => {
   next();
 };
 
+/*  **********************************
+ *  Review Data Validation Rules
+ * ********************************* */
+validate.reviewRules = () => {
+  return [
+    body("review_text")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Please provide review text."),
+  ];
+};
+
+/* ******************************
+ * Check data and return errors or continue
+ * ***************************** */
+validate.checkReviewData = async (req, res, next) => {
+  const { review_text, inv_id } = req.body;
+  let errors = [];
+  errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    const data = await invModel.getVehicleDetails(inv_id)
+    const grid = await utilities.buildVehicleDetails(data)
+    const className = `${data[0].inv_year} ${data[0].inv_make} ${data[0].inv_model}`
+    const reviews = await reviewModel.getReviewsByInventoryId(inv_id)
+    const reviewList = utilities.buildReviewList(reviews)
+    res.render("inventory/details", {
+      title: className,
+      nav,
+      grid,
+      inv_id,
+      reviewList,
+      errors,
+      review_text,
+    });
+    return;
+  }
+  next();
+};
+
 module.exports = validate;

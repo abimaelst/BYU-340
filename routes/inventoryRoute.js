@@ -102,7 +102,4 @@ router.post(
   utilities.handleErrors(invController.deleteItem)
 );
 
-//Route to process the new review
-router.post("/postedReview/", utilities.handleErrors(invController.review));
-
 module.exports = router;

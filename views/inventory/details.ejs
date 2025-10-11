@@ -1,37 +1,32 @@
-<!--Displaying providioned title or redirecting response to default index route-->
-<%if (title) {%>
-  <h1><%=title%></h1>
-<%} else{
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } else {
   res.redirect('/')
-}%>
-
-<!--Displaying messages in the view-->
+} %>
 
 <%- messages() %>
 
-<!--Displaying Inventory Items-->
 <%- grid %>
 
-
-<% if(locals.loggedin == 1) { %>
-  <h1>Customer Reviews</h1>
-  <form class="account" action="postedReview" method="post">
-      <p>Be the first to write a review</p>
-      <div class="input-control">
-      <label for="identifier">Screen Name:</label>
-      <input type="text" id="identifier" name="review_id" size="10" value="<%- locals.accountData.account_firstname %>" required>
-     </div>
-     <div class="input-control">
-      <label for="description">Review:</label>
-      <textarea rows="5" cols="10" name="review_text" id="description"
-       required></textarea>
-     </div>
-     <input type="hidden" id="invId" name="inv_id">
-     <input type="hidden" id="accountId" name="account_id">
-     <button type="submit">Add Review</button>
-  </form>       
+<div class="reviews-container">
+  <h2>Customer Reviews</h2>
+  <% if (locals.loggedin) { %>
+    <% if (!hasReviewed) { %>
+      <p>Be the first to write a review.</p>
+      <form action="/reviews/add" method="post" class="review-form">
+        <h3>Leave a Review</h3>
+        <textarea name="review_text" rows="4" required></textarea>
+        <input type="hidden" name="inv_id" value="<%= inv_id %>">
+        <button type="submit">Submit Review</button>
+      </form>
+    <% } else { %>
+      <p>You have already reviewed this vehicle.</p>
+    <% } %>
   <% } else { %>
-      <h1>Customer Reviews</h1>
-      <p>Be the first to write a review</p>
-      <p>You must <a href="/account/login">login</a> to write a review.</p>
+    <p><a href="/account/login">Log in</a> to leave a review.</p>
   <% } %>
+
+  <div class="review-list">
+    <%- reviewList %>
+  </div>
+</div>
