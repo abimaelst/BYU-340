@@ -1,5 +1,6 @@
 // Import necessary modules
 const invModel = require("../models/inventory-model")
+const reviewModel = require("../models/review-model")
 const utilities = require("../utilities/")
 const pool = require("../database/")
 
@@ -35,10 +36,21 @@ invCont.buildByInvId = async function (req, res, next) {
     const grid = await utilities.buildVehicleDetails(data)
     let nav = await utilities.getNav()
     const className = `${data[0].inv_year} ${data[0].inv_make} ${data[0].inv_model}`
+    const reviews = await reviewModel.getReviewsByInventoryId(inv_id)
+    const reviewList = utilities.buildReviewList(reviews)
+    let hasReviewed = false;
+    if (res.locals.loggedin) {
+      hasReviewed = await reviewModel.checkExistingReview(inv_id, res.locals.accountData.account_id)
+    }
+
     res.render("./inventory/details", {
       title: className,
       nav,
       grid,
+      inv_id,
+      reviewList,
+      hasReviewed,
+      errors: null,
     })
   } catch (error) {
     next(error)
